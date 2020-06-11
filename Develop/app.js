@@ -99,7 +99,7 @@ const nextEmployeePrompt = {
 const employees = [];
 
 // Utilize async function so that process happens synchronous and you get proper information
-async function init() {
+const init = async () => {
     const generalAnswers = await inquirer.prompt(promptQuestions);
     // Utilize Object Destructuring here to unpack values from promptQuestions array
     const { name, id, email, role} = generalAnswers;
@@ -142,7 +142,7 @@ async function init() {
     }else {
         fs.writeFile(outputPath, employees, function (err) {
             if (err) {
-                throw err;
+                console.log(err);
             }
         });
     };
