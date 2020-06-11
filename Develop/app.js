@@ -130,14 +130,16 @@ const init = async () => {
         const internAnswer = await inquirer.prompt(internPrompt);
         const school = internAnswer.school;
 
-        // New Constructor for Inter
+        // New Constructor for Intern
         const newIntern = new Intern(name, id, email, school);
         // Add the new employee to the Employees array
         employees.push(newIntern);
     }
 
+    // Prompt user if they want to add another employee
     const nextEmployee = await inquirer.prompt(nextEmployeePrompt);
-    if(nextEmployee === true) {
+    const boolean = nextEmployee.newEmployee;
+    if(boolean === true) {
         init();
     }else {
         fs.writeFile(outputPath, employees, function (err) {
