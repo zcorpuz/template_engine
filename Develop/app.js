@@ -89,6 +89,12 @@ const internPrompt = {
     }
 };
 
+const nextEmployeePrompt = {
+    type: 'confirm',
+    name: 'newEmployee',
+    message: 'Would you like to add another employee to the team?'
+};
+
 
 const employees = [];
 
@@ -130,7 +136,18 @@ async function init() {
         employees.push(newIntern);
     }
 
-    console.log(employees);
+    const nextEmployee = await inquirer.prompt(nextEmployeePrompt);
+    if(nextEmployee === true) {
+        init();
+    }else {
+        fs.writeFile(outputPath, employees, function (err) {
+            if (err) {
+                throw err;
+            }
+        });
+    };
 };
 
 init();
+
+
