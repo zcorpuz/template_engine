@@ -10,6 +10,7 @@ const outputPath = path.join(OUTPUT_DIR, "team.html");
 
 const render = require("./lib/htmlRenderer");
 
+//Array for general questions about the employee
 const promptQuestions = [
     {
         type: 'input',
@@ -53,10 +54,11 @@ const promptQuestions = [
     }
 ];
 
+//Role Specific question for a Manager Role
 const managerPrompt = {
     type: 'input',
     name: 'officeNumber',
-    message: 'What is the manager\s office number?',
+    message: 'What is the manager\'s office number?',
     validate: function(answer) {
         if (answer = NaN || answer.length < 1) {
             return 'Please enter valid office number number';
@@ -65,6 +67,7 @@ const managerPrompt = {
     }
 };
 
+//Role Specific question for an Engineer Role
 const engineerPrompt = {
     type: 'input',
     name: 'github',
@@ -77,6 +80,7 @@ const engineerPrompt = {
     }
 };
 
+// Role Specific question for an Intern Role
 const internPrompt = {
     type: 'input',
     name: 'school',
@@ -89,6 +93,7 @@ const internPrompt = {
     }
 };
 
+//Question that asks if the user wants to add another employee to the team
 const nextEmployeePrompt = {
     type: 'confirm',
     name: 'newEmployee',
@@ -116,7 +121,7 @@ const init = async () => {
         employees.push(newManager);
 
     } else if(role === 'Engineer') {
-        // Manager prompt if user selects role "Engineer"
+        // Engineer prompt if user selects role "Engineer"
         const engineerAnswer = await inquirer.prompt(engineerPrompt);
         const github = engineerAnswer.github;
 
@@ -142,7 +147,10 @@ const init = async () => {
     if(boolean === true) {
         init();
     }else {
-        fs.writeFile(outputPath, employees, function (err) {
+        //Calling the render function and passing through the employee array that was generated from the prompts
+        const finalEmployeeList = render(employees);
+        //Writing employee list to output folder where it generates the HTML template
+        fs.writeFile(outputPath, finalEmployeeList, function (err) {
             if (err) {
                 console.log(err);
             }
